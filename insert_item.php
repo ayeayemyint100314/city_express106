@@ -1,9 +1,43 @@
 <?php
 require_once "dbconn.php";
+if(!isset($_SESSION))
+{
+    session_start();
+}
 $sql = "select c.cid, c.cname from category c ";
 $stmt = $conn->query($sql);
 $stmt->execute();
 $categories = $stmt->fetchAll();
+
+if (isset($_POST['insertItem'])) {
+    $name = $_POST['itemName'];
+    $price = $_POST['price'];
+    $description = $_POST['description'];
+    $quantity = $_POST['quantity'];
+    $price = $_POST['price'];
+    $category = $_POST['category'];
+    $filename =  $_FILES['img']['name'];
+    $filepath = "item_img/" . $filename;
+
+    $status = move_uploaded_file($_FILES['img']['tmp_name'],  $filepath);
+    if ($status) // storing file to a specified directory is sussessful
+    {
+        try {
+            $sql = "insert into item values (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            // null is for ID which is auto increment primary key
+            $status = $stmt->execute([null, $name, $price, $category, $description, $filepath, $quantity]);
+            $lastId = $conn->lastInsertId();
+            if($status)
+            {   $_SESSION['insertSuccess'] = "New item with $lastId has been inserted successfully!";
+               header("Location:viewItem.php");
+            }
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+}
+
 
 
 ?>
@@ -23,7 +57,7 @@ $categories = $stmt->fetchAll();
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form>
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
 
                     <div class="mb-3">
                         <label for="itemName" class="form-label">Name</label>
@@ -45,7 +79,7 @@ $categories = $stmt->fetchAll();
                         <input class="form-control form-control-sm" name="img" type="file">
                     </div>
                     <div class="mb-3">
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" name="category">
                             <option selected>Open this select menu</option>
                             <?php
                             if (isset($categories)) {
@@ -66,7 +100,7 @@ $categories = $stmt->fetchAll();
                         <label for="floatingTextarea">Description</label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" name="insertItem">Submit</button>
                 </form>
 
 
