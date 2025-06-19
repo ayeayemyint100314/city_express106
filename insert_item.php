@@ -56,8 +56,13 @@ if (isset($_POST['insertItem'])) {
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
-                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
+            <?php require_once "navbarbar.php";  ?>
+
+        </div>
+        <div class="row my-5">
+            <div class="col-md-4 mx-auto">
+                <h4 class="text-center">Insert Item </h4>
+                <form class="border border-primary p-3" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
 
                     <div class="mb-3">
                         <label for="itemName" class="form-label">Name</label>

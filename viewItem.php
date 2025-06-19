@@ -5,7 +5,7 @@ if(!isset($_SESSION))
     session_start(); // create a session if not exists
 }
 try{
-    $sql = "SELECT i.item_name, i.price,
+    $sql = "SELECT i.item_id, i.item_name, i.price,
 		    c.cname as category ,
 		    i.description, i.quantity,
 		    i.img_path
@@ -35,11 +35,23 @@ try{
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" defer></script>
 
 </head>
-<body>
+<body class="bg-light">
     <div class="container-fluid">
+       <div class="row">
+        <?php require_once "navbarbar.php"; ?>
+       </div>
             <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-9">
+                
+                <div class="col-md-10 my-5 mx-auto">
+                    <?php 
+                    if(isset($_SESSION['insertSuccess']))
+                    {
+                    echo "<p class='alert alert-success'>$_SESSION[insertSuccess] </p>";
+                    unset($_SESSION['insertSuccess']);
+                    }
+                    
+                    
+                    ?>
                    <table class="table table-striped">
                     <thead>
                         <tr>
@@ -61,10 +73,11 @@ try{
                         echo "<tr>
                                 <td>$item[item_name]</td>
                                 <td>$item[price]</td>
-                                <td>$item[description]</td>
+                                <td class=text-wrap>$item[description]</td>
                                 <td>$item[quantity]</td>
                                 <td>$item[category]</td>
-                                <td><img style=width:60px;height:80px; src=$item[img_path]></td>             
+                                <td><img style=width:60px;height:80px; src=$item[img_path]></td>  
+                                <td><a class='btn btn-primary rounded-pill' href=editItem.php?id=$item[item_id]>Edit</a></td>           
                               </tr>";
                            }     
                         }                        
