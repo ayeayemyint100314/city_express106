@@ -44,7 +44,7 @@ if (isset($_POST['updateItem'])) {
                      where item_id=?";
             $stmt = $conn->prepare($sql);
             // null is for ID which is auto increment primary key
-            $status = $stmt->execute([ $name, $price,  $description, $quantity, $category,  $filepath, $id]);
+            $status = $stmt->execute([$name, $price,  $description, $quantity, $category,  $filepath, $id]);
             $lastId = $id;
             if ($status) {
                 $_SESSION['updateSuccess'] = "Item with $lastId has been updated successfully!";
@@ -56,7 +56,20 @@ if (isset($_POST['updateItem'])) {
     }
 }
 
+if (isset($_GET['did'])) {
+    try {
+        $sql = "delete from item where item_id=?";
+        $stmt = $conn->prepare($sql);
+        $status = $stmt->execute([$_GET['did']]);
 
+        if ($status) {
+              $_SESSION['deleteSuccess'] = "Item with $_GET[did] has been deleted successfully!";
+            header("Location:viewItem.php");
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
 
 ?>
 
