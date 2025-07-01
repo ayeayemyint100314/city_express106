@@ -81,6 +81,14 @@ if(isset($_GET['radioAction']))
      $items = $stmt->fetchAll();
 
 
+}// radio filter end
+if(isset($_GET['bSearch']))
+{   $keyword = $_GET['kSearch'];
+    $sql = "select * from item where item_name like ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute(["%".$keyword."%"]);// zero or more letter
+    $items = $stmt->fetchAll();
+
 }
 
 

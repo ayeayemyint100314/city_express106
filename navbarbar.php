@@ -16,20 +16,27 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Pricing</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Dashboard</a>
-        </li>
+        <?php if (!isset($_SESSION['loginSuccess']) && !isset($_SESSION['adminEmail'])) { ?>
+          <li class="nav-item">
+            <a class="nav-link" href="signup.php">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.php">Login</a>
+          </li>
+        <?php } else {
+        ?>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
+          <form class="d-flex" action="viewItem.php" method="get">
+            <input class="form-control me-2" name="kSearch" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary" name="bSearch" type="submit">Search</button>
+          </form>
 
-         <li class="nav-item">
-          <a class="nav-link" href="signup.php">Sign Up</a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" href="login.php">Login</a>
-        </li>
-
-         <li class="nav-item">
-          <a class="nav-link" href="logout.php">Logout</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.php">Logout</a>
+          </li>
+        <?php } ?>
       </ul>
     </div>
   </div>
