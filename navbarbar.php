@@ -36,7 +36,9 @@
           <li class="nav-item">
             <a class="nav-link" href="logout.php">Logout</a>
           </li>
-        <?php } ?>
+         
+        <?php  echo "<li class=nav-item><a class=nav-link text-bg-dark> $_SESSION[adminEmail]
+        </a> </li>";  } ?>
       </ul>
     </div>
   </div>
